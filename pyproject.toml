@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "todolist-oop"
+version = "0.1.0"
+description = "A simple ToDoList application using OOP architecture."
+authors = ["Nazy <nazyhomayounfar@gmail.com>"]
+
+packages = [
+    { include = "todolist" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0" 
+python-dotenv = "^1.0.0" 
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

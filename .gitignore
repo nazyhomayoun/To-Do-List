@@ -1,0 +1,15 @@
+# Python environment and cache
+__pycache__/
+*.pyc
+
+# Environment variables (Crucial for security and configuration!)
+.env
+
+# Poetry virtual environment folders
+.venv/
+
+# IDE specific files (for VS Code)
+.vscode/
+
+# Operating System files
+.DS_Store
