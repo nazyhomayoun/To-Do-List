@@ -195,7 +195,8 @@ class ToDoListService:
             task_to_update.title = title
             
         if description is not None:
-            # TODO: Add validation for description (max 150 words) here.
+            if len(description.split()) > 150:
+                raise BusinessLogicError("Task description must not exceed 150 words.")
             task_to_update.description = description
 
         if status is not None:
