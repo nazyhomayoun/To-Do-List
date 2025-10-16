@@ -1,4 +1,3 @@
-# ToDoList Project
 # ToDoList (OOP & CLI)
 
 A simple, command-line interface (CLI) based ToDoList management system, developed using Object-Oriented Programming (OOP) principles and a Layered Architecture in Python. This project uses Poetry for dependency management.
