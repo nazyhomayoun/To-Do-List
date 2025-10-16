@@ -1,5 +1,3 @@
-# todolist/service.py
-
 from todolist.repository import InMemoryRepository
 from todolist.models.project import Project 
 from todolist.models.task import Task, TaskStatus 
@@ -9,10 +7,13 @@ from datetime import datetime
 
 # Define a custom exception class for business logic errors
 class BusinessLogicError(Exception):
-    """ Used to handle business rules violations (e.g., duplicate name, invalid length). """
+
+    """ Used to handle business rules violations
+    (e.g., duplicate name, invalid length). """
     pass
 
 class ToDoListService:
+  
     """
     The Business Logic Layer (Service).
     Responsible for enforcing rules, validation, and managing interaction with the Repository.
@@ -60,6 +61,7 @@ class ToDoListService:
     # User Story: Delete Project - (Includes Cascade Delete logic)
     
     def delete_project(self, project_id: uuid.UUID) -> None:
+      
         """
         Deletes the project and all associated tasks (Cascade Delete).
         """
@@ -82,6 +84,7 @@ class ToDoListService:
 
     # User Story: List Projects
     def get_all_projects(self) -> List[Project]:
+     
         """
         Returns a list of all projects stored in the system.
         No business logic required here, just retrieval.
@@ -89,6 +92,7 @@ class ToDoListService:
         return self._repo.get_all_projects()
 
     def get_project_details(self, project_id: uuid.UUID) -> Project:
+     
         """
         Returns a specific project object by its ID.
         Raises an error if the project is not found.
@@ -126,6 +130,7 @@ class ToDoListService:
     # User Story: Create Task (Start of Task CRUD)
     
     def create_task(self, project_id: uuid.UUID, title: str, description: str, deadline: datetime = None) -> Task:
+       
         """
         Creates a new task associated with a specific project.
         Requires validation that the parent project exists.
@@ -155,11 +160,10 @@ class ToDoListService:
 
         return new_task
     # User Story: Read Task
-
     # User Story: List Tasks (Read)
 
-
     def get_tasks_for_project(self, project_id: uuid.UUID) -> List[Task]:
+
         """
         Retrieves all tasks associated with a specific project ID.
         Requires validation that the parent project exists.
@@ -173,12 +177,12 @@ class ToDoListService:
 
     # User Story: Update Task
 
-
     def update_task(self, 
                     task_id: uuid.UUID, 
                     title: Optional[str] = None, 
                     description: Optional[str] = None, 
                     status: Optional[TaskStatus] = None) -> Task:
+        
         """
         Updates the details of an existing task.
         Performs validation on updated fields (title length, valid status).
@@ -211,9 +215,9 @@ class ToDoListService:
         return task_to_update
 
     # User Story: Delete Task
-
-
+    
     def delete_task(self, task_id: uuid.UUID) -> None:
+
         """
         Deletes a specific task by its ID.
         """
