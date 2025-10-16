@@ -9,10 +9,9 @@ from todolist.models.task import Task, TaskStatus
 
 
 # Initialization & Main Loop
-
-
 def initialize_app() -> ToDoListService:
     """Initializes the Repository and injects it into the Service layer."""
+
     repo = InMemoryRepository()
     service = ToDoListService(repository=repo)
     return service
@@ -63,9 +62,9 @@ def main():
 
 # Helper Functions (Conversion)
 
-
 def get_project_id_by_index(service: ToDoListService, index: int) -> Optional[uuid.UUID]:
     """Helper to get a Project ID based on a 1-based index from the list."""
+
     projects = service.get_all_projects()
     if 0 < index <= len(projects):
         # We need to sort or ensure order consistency if the repository doesn't guarantee it.
@@ -74,10 +73,12 @@ def get_project_id_by_index(service: ToDoListService, index: int) -> Optional[uu
     return None
 
 def parse_deadline(deadline_str: str) -> Optional[datetime]:
+
     """
     Tries to convert a string into a datetime object.
     This handles the Format Validation (Acceptance Criteria) at the CLI level.
     """
+
     if not deadline_str:
         return None
     try:
@@ -88,6 +89,7 @@ def parse_deadline(deadline_str: str) -> Optional[datetime]:
 
 def list_projects(service: ToDoListService) -> List[Project]:
     """Retrieves and displays all projects."""
+
     projects = service.get_all_projects()
     if not projects:
         print("\n[INFO] No projects found.")
@@ -107,6 +109,7 @@ def list_projects(service: ToDoListService) -> List[Project]:
 
 def create_project_cli(service: ToDoListService):
     """Handles user input and service call for creating a project."""
+
     print("\n--- Create New Project ---")
     name = input("Enter Project Name: ")
     description = input("Enter Project Description: ")
@@ -117,6 +120,7 @@ def create_project_cli(service: ToDoListService):
 
 def delete_project_cli(service: ToDoListService):
     """Handles user input and service call for deleting a project (with cascade)."""
+
     projects = list_projects(service)
     if not projects:
         return
@@ -184,6 +188,7 @@ def update_project_cli(service: ToDoListService):
         
 def project_menu(service: ToDoListService):
     """Manages the loop for project operations."""
+
     while True:
         print_separator()
         print("--- Project Management ---")
@@ -218,16 +223,19 @@ def project_menu(service: ToDoListService):
 
 def get_task_id_by_index(service: ToDoListService, project_id: uuid.UUID, index: int) -> Optional[uuid.UUID]:
     """Helper to get a Task ID based on a 1-based index from the list for a project."""
+
     tasks = service.get_tasks_for_project(project_id)
     if 0 < index <= len(tasks):
         return tasks[index - 1].id
     return None
 
 def parse_deadline(deadline_str: str) -> Optional[datetime]:
+
     """
     Tries to convert a string into a datetime object.
     Raises ValueError on incorrect format (Acceptance Criteria).
     """
+
     if not deadline_str or deadline_str.strip() == '':
         return None
     try:
@@ -238,6 +246,7 @@ def parse_deadline(deadline_str: str) -> Optional[datetime]:
 
 def list_tasks(service: ToDoListService, project_id: uuid.UUID) -> List[Task]:
     """Retrieves and displays all tasks for the selected project."""
+
     tasks = service.get_tasks_for_project(project_id)
     
     if not tasks:
@@ -290,6 +299,7 @@ def create_task_cli(service: ToDoListService, project_id: uuid.UUID):
 
 def update_task_status_cli(service: ToDoListService, project_id: uuid.UUID):
     """Handles updating the status of an existing task."""
+
     tasks = list_tasks(service, project_id)
     if not tasks:
         return
@@ -389,6 +399,7 @@ def task_operation_menu(service: ToDoListService, project_id: uuid.UUID):
 
 def task_menu(service: ToDoListService):
     """Manages the task operations by first selecting a project."""
+    
     while True:
         # show project selection menu
         projects = list_projects(service) 
