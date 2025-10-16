@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 import uuid
 
 class InMemoryRepository:
+
     """
     InMemoryRepository is a simple in-memory data storage layer for managing Project and Task objects.
     This repository provides basic CRUD operations.
@@ -39,8 +40,6 @@ class InMemoryRepository:
 
 
     # Task's methods (CRUD)
-
-
     def add_task(self, task: Task) -> None:
         # add new task
         self._tasks[task.id] = task
