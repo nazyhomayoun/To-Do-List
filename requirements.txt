@@ -1,0 +1,18 @@
+# Database
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.23
+
+# Migration
+alembic==1.12.1
+
+# Scheduling (optional for cron job)
+schedule==1.2.0
+
+# Testing (for future phases)
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Code Quality
+black==23.11.0
+flake8==6.1.0
+psycopg2-binary==2.9.9
