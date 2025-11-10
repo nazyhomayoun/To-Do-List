@@ -1,0 +1,15 @@
+# app/db/base.py
+"""
+Base class for all SQLAlchemy models
+"""
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    """
+    Base class for all database models
+    
+    This class serves as the declarative base for SQLAlchemy ORM models.
+    All model classes should inherit from this base class.
+    """
+    pass
