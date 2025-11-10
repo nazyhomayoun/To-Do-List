@@ -117,26 +117,41 @@ class TodoCLI:
         except TodoBaseException as e:
             print(f"\n✗ Error: {e}")
 
-    def login(self):
-        """User login"""
-        self.display_header("Login")
-        
-        try:
-            email = self.get_input("Email: ")
-            password = self.get_input("Password: ")
-            
-            user = self.user_service.authenticate(email, password)
+def login(self):
+    """User login"""
+    self.display_header("Login")
+    
+    try:
+        email = self.get_input("Email: ")
+        password = self.get_input("Password: ")
+
+        # use Session
+        with get_db_session() as db:
+            user = self.user_service.authenticate(email, password, db=db)
             
             if user:
+                # load user details
+                user.id
+                user.username
+                user.first_name
+                user.email
+                user.password_hash
+                
                 self.current_user = user
-                print(f"\n✓ Welcome back, {user.first_name}!")
+                print(f"\n✓ Welcome back, {self.current_user.first_name}!")
             else:
                 print("\n✗ Invalid email or password!")
                 
-        except NotFoundException as e:
-            print(f"\n✗ Error: {e}")
-        except TodoBaseException as e:
-            print(f"\n✗ Error: {e}")
+    except NotFoundException as e:
+        print(f"\n✗ Error: {e}")
+    except TodoBaseException as e:
+        print(f"\n✗ Error: {e}")
+
+                
+    except NotFoundException as e:
+        print(f"\n✗ Error: {e}")
+    except TodoBaseException as e:
+        print(f"\n✗ Error: {e}")
 
     def logout(self):
         """User logout"""
