@@ -1,15 +1,13 @@
-import uuid
-from datetime import datetime
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from app.db.base import Base
 
-class Project:
-    # keep project data
-    def __init__(self, name: str, description: str):
-        self.id = uuid.uuid4()
-        self.name = name
-        self.description = description
-        self.created_at = datetime.now()
-
-    # You can add additional methods or properties for Project below
-    def __repr__(self):
-        return f"Project(id='{self.id}', name='{self.name}')"
+class Project(Base):
+    __tablename__ = "projects"
     
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), unique=True, nullable=False)
+    description = Column(String(500))
+    
+    #  One-to-Many Task
+    tasks = relationship("Task", back_populates="project", cascade="all, delete-orphan")
