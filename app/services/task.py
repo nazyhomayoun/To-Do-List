@@ -16,15 +16,18 @@ class TaskService:
         self,
         title: str,
         project_id: int,
-        description: str = None,
+        description: Optional[str] = None,
         priority: TaskPriority = TaskPriority.MEDIUM,
-        deadline: datetime = None
+        deadline: Optional[datetime] = None
     ) -> Task:
         """Create a new task"""
-        if len(title.strip()) == 0:
+        if not title or len(title.strip()) == 0:
             raise ValidationException("Task title cannot be empty")
         
-        if deadline is not None and deadline < datetime.utcnow():
+        if len(title) > 200:
+            raise ValidationException("Task title is too long (max 200 characters)")
+        
+        if deadline is not None and deadline < datetime.now():
             raise ValidationException("Deadline cannot be in the past")
         
         task = Task(
@@ -46,13 +49,17 @@ class TaskService:
         """Get all tasks for a project"""
         return self.repository.get_by_project(project_id)
     
+    def get_all_tasks(self) -> List[Task]:
+        """Get all tasks"""
+        return self.repository.get_all()
+    
     def update_task(
         self,
         task_id: int,
-        title: str = None,
-        description: str = None,
-        priority: TaskPriority = None,
-        deadline: datetime = None
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        priority: Optional[TaskPriority] = None,
+        deadline: Optional[datetime] = None
     ) -> Task:
         """Update task"""
         task = self.repository.get_by_id_or_fail(task_id)
@@ -60,6 +67,8 @@ class TaskService:
         if title is not None:
             if len(title.strip()) == 0:
                 raise ValidationException("Task title cannot be empty")
+            if len(title) > 200:
+                raise ValidationException("Task title is too long (max 200 characters)")
             task.title = title.strip()
         
         if description is not None:
@@ -69,7 +78,7 @@ class TaskService:
             task.priority = priority
         
         if deadline is not None:
-            if deadline < datetime.utcnow():
+            if deadline < datetime.now():
                 raise ValidationException("Deadline cannot be in the past")
             task.deadline = deadline
         
@@ -79,17 +88,22 @@ class TaskService:
         """Change task status"""
         task = self.repository.get_by_id_or_fail(task_id)
         task.status = status
+        
+        # Set closed_at when marking as done
+        if status == TaskStatus.DONE and not task.closed_at:
+            task.closed_at = datetime.now()
+        
         return self.repository.update(task)
     
     def delete_task(self, task_id: int) -> None:
         """Delete task"""
         self.repository.delete_by_id(task_id)
     
-    def get_tasks_by_status(self, status: TaskStatus, project_id: int = None) -> List[Task]:
+    def get_tasks_by_status(self, status: TaskStatus, project_id: Optional[int] = None) -> List[Task]:
         """Get tasks by status"""
         return self.repository.get_by_status(status, project_id)
     
-    def get_tasks_by_priority(self, priority: TaskPriority, project_id: int = None) -> List[Task]:
+    def get_tasks_by_priority(self, priority: TaskPriority, project_id: Optional[int] = None) -> List[Task]:
         """Get tasks by priority"""
         return self.repository.get_by_priority(priority, project_id)
     
@@ -99,8 +113,10 @@ class TaskService:
         count = 0
         
         for task in overdue_tasks:
-            task.status = TaskStatus.OVERDUE
-            self.repository.update(task)
-            count += 1
+            if task.status != TaskStatus.DONE:
+                task.status = TaskStatus.OVERDUE
+                task.closed_at = datetime.now()
+                self.repository.update(task)
+                count += 1
         
         return count
