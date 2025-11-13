@@ -1,7 +1,8 @@
+# app/repositories/base.py
 from typing import TypeVar, Generic, List, Optional, Type
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from app.models.base import Base
+from app.db.base import Base
 from app.exceptions import (
     NotFoundException,
     DuplicateException,
@@ -22,8 +23,8 @@ class BaseRepository(Generic[T]):
         """Create a new entity"""
         try:
             self.session.add(entity)
-            self.session.flush()
-            self.session.refresh(entity)
+            self.session.commit()  # ✅ تغییر: فقط commit کافی است
+            self.session.refresh(entity)  # ✅ بعد از commit
             return entity
         except IntegrityError as e:
             self.session.rollback()
@@ -73,7 +74,7 @@ class BaseRepository(Generic[T]):
     def update(self, entity: T) -> T:
         """Update an entity"""
         try:
-            self.session.flush()
+            self.session.commit()
             self.session.refresh(entity)
             return entity
         except IntegrityError as e:
@@ -93,7 +94,7 @@ class BaseRepository(Generic[T]):
         """Delete an entity"""
         try:
             self.session.delete(entity)
-            self.session.flush()
+            self.session.commit()
         except SQLAlchemyError as e:
             self.session.rollback()
             raise DatabaseException(
