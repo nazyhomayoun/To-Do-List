@@ -1,36 +1,46 @@
-from app.db.session import get_db_session, init_db
-from app.services.user import UserService
+from app.db import SessionLocal, engine
+from app.models.user import User
+from app.models.project import Project
+from app.models.task import Task
 from app.services.project import ProjectService
-from app.services.task import TaskService
+from sqlalchemy.exc import SQLAlchemyError
 
-# جدول‌ها رو بساز
-init_db()
+# اتصال به دیتابیس
+session = SessionLocal()
 
-with get_db_session() as db:
-    # سرویس‌ها با session ساخته میشن
-    user_service = UserService(db)
-    project_service = ProjectService(db)
-    task_service = TaskService(db)
+try:
+    print("✅ Connection successful")
 
-    # اضافه کردن یک کاربر نمونه
-    user = user_service.create_user(
-        username="nazy",
-        email="nazyhf@gmail.com",
-        password="123456"
-    )
-    print("User added:", user.username)
+    # --- 1️⃣ اضافه کردن کاربر ---
+    user = User(username="nazy_test", email="nazy@example.com", password_hash="hashedpass")
+    session.add(user)
+    session.commit()
+    print(f"👤 User added: {user.username} (id={user.id})")
 
-    # اضافه کردن پروژه نمونه
+    # --- 2️⃣ اضافه کردن پروژه ---
+    project_service = ProjectService(session)
     project = project_service.create_project(
-        name="Sample Project",
-        owner_id=user.id
+        title="Sample Project",
+        description="Test project for database check",
+        owner_id=user.id   # حالا متد این پارامتر رو می‌پذیره
     )
-    print("Project added:", project.name)
+    session.commit()
+    print(f"📁 Project added: {project.title} (id={project.id})")
 
-    # اضافه کردن تسک نمونه
-    task = task_service.create_task(
-        title="Sample Task",
-        project_id=project.id,
-        assignee_id=user.id
+    # --- 3️⃣ اضافه کردن تسک ---
+    task = Task(
+        title="First Task",
+        description="This is a test task for the project",
+        project_id=project.id
     )
-    print("Task added:", task.title)
+    session.add(task)
+    session.commit()
+    print(f"✅ Task added: {task.title} (id={task.id})")
+
+except SQLAlchemyError as e:
+    print("❌ Database error:", e)
+    session.rollback()
+
+finally:
+    session.close()
+    print("🔚 Test finished")
