@@ -33,7 +33,7 @@ class Task(Base, TimestampMixin):
     deadline = Column(DateTime, nullable=True)
     closed_at = Column(DateTime, nullable=True)
 
-    # Foreign Keys (فقط یکبار!)
+    # Foreign Keys
     project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False)
     assignee_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
