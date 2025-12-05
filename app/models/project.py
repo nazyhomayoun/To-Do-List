@@ -14,6 +14,7 @@ class Project(Base, TimestampMixin):
     owner_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
 
     # Relationships
+
     owner = relationship('User', back_populates='projects')
     tasks = relationship('Task', back_populates='project', cascade='all, delete-orphan')
 
