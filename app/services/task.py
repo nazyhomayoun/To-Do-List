@@ -28,9 +28,6 @@ class TaskService:
         if len(title) > 200:
             raise ValidationException("Task title is too long (max 200 characters)")
 
-        if deadline is not None and deadline < datetime.now():
-            raise ValidationException("Deadline cannot be in the past")
-
         task = Task(
             title=title.strip(),
             description=description,
