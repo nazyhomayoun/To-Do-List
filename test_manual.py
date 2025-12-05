@@ -48,7 +48,7 @@ def test_full_scenario():
                 print(f"❌ Error creating user: {e}")
                 raise
 
-        user1 = get_or_create_user("lili_meri", "lili.meri@example.com", "123456")
+        user1 = get_or_create_user("nana_neli", "nana.meri@example.com", "123456")
         print(f"User OK → {user1.username}")
 
         # =====================================================
@@ -57,14 +57,14 @@ def test_full_scenario():
         print("\n[2] Creating Projects\n" + "-" * 70)
 
         project1 = project_service.create_project(
-            title="shopping",
+            title="todolist project",
             owner_id=user1.id,
-            description="Buy a jacket"
+            description="backend project",
         )
         project2 = project_service.create_project(
-            title="Database Performance Optimization",
+            title="buy gift",
             owner_id=user1.id,
-            description="improve queries",
+            description="friend's birthday",
         )
         print("Projects created successfully.")
 
@@ -80,21 +80,21 @@ def test_full_scenario():
 
         # Project 1 tasks – assign to user1
         task1 = create_task(
-            title="shopping",
+            title="todolist project",
             project_id=project1.id,
             assignee_id=user1.id,
-            description="need to buy new jacket",
+            description="second fase",
             priority=TaskPriority.MEDIUM,
-            deadline=datetime.now() + timedelta(days=7)
+            deadline=datetime.now() + timedelta(days=9)
         )
 
 
         # Overdue tasks
         task2 = create_task(
-            title="Database Performance Optimization",
+            title="buy gift",
             project_id=project1.id,
             assignee_id=user1.id,
-            description="Optimize queries",
+            description="birthday party",
             priority=TaskPriority.HIGH,
             deadline=datetime.now() - timedelta(days=3)
         )
