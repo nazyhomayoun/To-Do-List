@@ -50,13 +50,13 @@ SessionLocal = sessionmaker(
 
 class DatabaseSession:
     """Context manager for database sessions"""
-    
+
     def __init__(self):
         self.session: Session = SessionLocal()
-    
+
     def __enter__(self) -> Session:
         return self.session
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is not None:
             self.session.rollback()
@@ -67,7 +67,7 @@ class DatabaseSession:
 def get_db_session() -> Generator[Session, None, None]:
     """
     Dependency function for getting database session
-    
+
     Usage:
         with get_db_session() as db:
             # Your database operations
@@ -87,7 +87,6 @@ def get_db_session() -> Generator[Session, None, None]:
 def init_db():
     """
     Initialize database by creating all tables
-    
     Note: In production, use Alembic migrations instead
     """
     Base.metadata.create_all(bind=engine)
@@ -96,7 +95,7 @@ def init_db():
 def drop_db():
     """
     Drop all tables from database
-    
+
     Warning: This will delete all data!
     """
     Base.metadata.drop_all(bind=engine)
