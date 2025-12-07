@@ -58,6 +58,21 @@ class ProjectService:
 
         return self.repository.update(project)
 
+    @staticmethod
+    def get_projects(
+            db: Session,
+            owner_id: Optional[int] = None,
+            skip: int = 0,
+            limit: int = 100
+    ) -> List[Project]:
+        """Get all projects with optional filtering and pagination"""
+        query = db.query(Project)
+
+        if owner_id:
+            query = query.filter(Project.owner_id == owner_id)
+
+        return query.offset(skip).limit(limit).all()
+
     def delete_project(self, project_id: int) -> None:
         """Delete a project by its ID"""
         self.repository.delete_by_id(project_id)
