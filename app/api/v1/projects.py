@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Query, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from app.schemas import project as schemas
 from app.api.deps import get_db
+from app.api import deps
 from app.schemas.project import ProjectCreate, ProjectResponse
 from app.services.project import ProjectService
 
