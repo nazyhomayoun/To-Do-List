@@ -62,6 +62,15 @@ class UserService:
     def get_user_by_id(self, user_id: int) -> User:
         """Get user by ID"""
         return self.repository.get_by_id_or_fail(user_id)
+
+    @staticmethod
+    def get_users(
+            db: Session,
+            skip: int = 0,
+            limit: int = 100
+    ) -> List[User]:
+        """Get all users with pagination"""
+        return db.query(User).offset(skip).limit(limit).all()
     
     def authenticate(self, username: str, password: str) -> Optional[User]:
         """Authenticate user"""
