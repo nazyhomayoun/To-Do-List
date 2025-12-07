@@ -2,6 +2,7 @@ from typing import Optional
 import hashlib
 from sqlalchemy.orm import Session
 from app.models.user import User
+from typing import List, Optional
 from app.repositories.user import UserRepository
 from app.exceptions import ValidationException, DuplicateException
 
