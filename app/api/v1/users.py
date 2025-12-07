@@ -4,7 +4,7 @@ from typing import List
 
 from app.api.deps import get_db
 from app.schemas.user import UserCreate, UserResponse
-from app.services.user_service import UserService
+from app.services.user import UserService
 
 router = APIRouter()
 

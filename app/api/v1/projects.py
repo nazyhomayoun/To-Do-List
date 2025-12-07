@@ -4,7 +4,7 @@ from typing import List
 
 from app.api.deps import get_db
 from app.schemas.project import ProjectCreate, ProjectResponse
-from app.services.project_service import ProjectService
+from app.services.project import ProjectService
 
 router = APIRouter()
 

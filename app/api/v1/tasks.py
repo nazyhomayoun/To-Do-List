@@ -5,7 +5,7 @@ from datetime import datetime
 
 from app.api.deps import get_db
 from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
-from app.services.task_service import TaskService
+from app.services.task import TaskService
 
 router = APIRouter()
 
