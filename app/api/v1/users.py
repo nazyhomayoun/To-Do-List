@@ -34,6 +34,23 @@ def get_all_users(db: Session = Depends(get_db)):
     users = user_service.get_all_users()
     return users
 
+@router.get("/", response_model=List[schemas.UserResponse])
+def read_users(
+    skip: int = 0,
+    limit: int = Query(default=100, le=100),
+    db: Session = Depends(deps.get_db)
+):
+    print(f"🔍 GET /users called with skip={skip}, limit={limit}")
+    try:
+        users = UserService.get_users(db=db, skip=skip, limit=limit)
+        print(f"✅ Found {len(users)} users")
+        return users
+    except Exception as e:
+        print(f"❌ Error in get_users: {str(e)}")
+        print(f"❌ Error type: {type(e)}")
+        import traceback
+        traceback.print_exc()
+        raise
 
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user(user_id: int, db: Session = Depends(get_db)):
