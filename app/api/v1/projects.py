@@ -34,6 +34,25 @@ def get_all_projects(db: Session = Depends(get_db)):
     projects = project_service.get_all_projects()
     return projects
 
+@router.get("/", response_model=List[schemas.ProjectResponse])
+def read_projects(
+    owner_id: Optional[int] = Query(None),
+    skip: int = 0,
+    limit: int = Query(default=100, le=100),
+    db: Session = Depends(deps.get_db)
+):
+    print(f"🔍 GET /projects called with owner_id={owner_id}, skip={skip}, limit={limit}")
+    try:
+        projects = ProjectService.get_projects(db=db, owner_id=owner_id, skip=skip, limit=limit)
+        print(f"✅ Found {len(projects)} projects")
+        return projects
+    except Exception as e:
+        print(f"❌ Error in get_projects: {str(e)}")
+        print(f"❌ Error type: {type(e)}")
+        import traceback
+        traceback.print_exc()
+        raise
+
 
 @router.get("/{project_id}", response_model=ProjectResponse)
 def get_project(project_id: int, db: Session = Depends(get_db)):
