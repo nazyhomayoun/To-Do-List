@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-
+from app.schemas import user as schemas
 from app.api.deps import get_db
 from app.schemas.user import UserCreate, UserResponse
 from app.services.user import UserService
