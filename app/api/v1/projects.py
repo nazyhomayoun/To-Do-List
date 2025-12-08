@@ -28,6 +28,7 @@ def create_project(project: ProjectCreate, db: Session = Depends(get_db)):
         )
 
 
+
 @router.get("/", response_model=List[schemas.ProjectResponse])
 def read_projects(
     owner_id: Optional[int] = Query(None),

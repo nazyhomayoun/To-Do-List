@@ -58,6 +58,7 @@ class ProjectService:
 
         return self.repository.update(project)
 
+
     @staticmethod
     def get_projects(
             db: Session,

@@ -9,6 +9,7 @@ class ProjectBase(BaseModel):
     description: Optional[str] = None
 
 
+
 class ProjectCreate(ProjectBase):
     """Schema for creating a project"""
     owner_id: int
