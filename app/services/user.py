@@ -72,7 +72,32 @@ class UserService:
     ) -> List[User]:
         """Get all users with pagination"""
         return db.query(User).offset(skip).limit(limit).all()
-    
+
+    def get_all_users(self) -> List[User]:
+        """Get all users"""
+        return self.repository.get_all()
+
+    @staticmethod
+    def get_users(
+            db: Session,
+            skip: int = 0,
+            limit: int = 100
+    ) -> List[User]:
+        """Get all users with pagination"""
+        return db.query(User).offset(skip).limit(limit).all()
+
+    def authenticate(self, username: str, password: str) -> Optional[User]:
+        """Authenticate user"""
+        user = self.repository.get_by_username(username)
+        if user is None:
+            return None
+
+        password_hash = self.hash_password(password)
+        if user.password_hash == password_hash:
+            return user
+
+        return None
+
     def authenticate(self, username: str, password: str) -> Optional[User]:
         """Authenticate user"""
         user = self.repository.get_by_username(username)
