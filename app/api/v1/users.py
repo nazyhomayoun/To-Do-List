@@ -28,13 +28,6 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         )
 
 
-@router.get("/", response_model=List[UserResponse])
-def get_all_users(db: Session = Depends(get_db)):
-    """Get all users"""
-    user_service = UserService(db)
-    users = user_service.get_all_users()
-    return users
-
 @router.get("/", response_model=List[schemas.UserResponse])
 def read_users(
     skip: int = 0,
