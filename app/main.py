@@ -3,7 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.v1 import users, projects, tasks
 
-# Create FastAPI app
+"""
+FastAPI Application Entry Point
+
+This is the main web service application.
+For CLI (deprecated), see /main.py in project root.
+"""
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
