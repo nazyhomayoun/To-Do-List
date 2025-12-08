@@ -16,7 +16,7 @@ def create_project(project: ProjectCreate, db: Session = Depends(get_db)):
     project_service = ProjectService(db)
     try:
         created_project = project_service.create_project(
-            name=project.name,
+            title=project.title,
             description=project.description,
             owner_id=project.owner_id
         )
@@ -27,13 +27,6 @@ def create_project(project: ProjectCreate, db: Session = Depends(get_db)):
             detail=str(e)
         )
 
-
-@router.get("/", response_model=List[ProjectResponse])
-def get_all_projects(db: Session = Depends(get_db)):
-    """Get all projects"""
-    project_service = ProjectService(db)
-    projects = project_service.get_all_projects()
-    return projects
 
 @router.get("/", response_model=List[schemas.ProjectResponse])
 def read_projects(

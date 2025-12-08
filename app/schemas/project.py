@@ -5,7 +5,7 @@ from datetime import datetime
 
 class ProjectBase(BaseModel):
     """Base Project schema"""
-    name: str
+    title: str
     description: Optional[str] = None
 
 
